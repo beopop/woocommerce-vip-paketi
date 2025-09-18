@@ -1,0 +1,178 @@
+#wvp-health-quiz{max-width:100%;margin:0 auto;font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;}
+#wvp-health-quiz label{display:block;margin-bottom:15px;color:#1d2327;font-weight:500;}
+#wvp-health-quiz input,#wvp-health-quiz select{width:100%;padding:12px 15px;box-sizing:border-box;border:2px solid #dee2e6;border-radius:6px;font-size:16px;transition:border-color 0.3s ease;}
+#wvp-health-quiz input:focus,#wvp-health-quiz select:focus{border-color:#d4a017;outline:none;box-shadow:0 0 0 3px rgba(212, 160, 23, 0.1);}
+#wvp-health-quiz select{background:#fff;appearance:none;background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");background-position:right 12px center;background-repeat:no-repeat;background-size:16px;}
+#wvp-health-quiz button{padding:12px 24px;margin-top:15px;cursor:pointer;border:none;border-radius:6px;font-size:16px;font-weight:600;transition:all 0.3s ease;}
+.wvp-health-products{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin:30px 0;}
+.wvp-health-products .wvp-health-select{text-align:center;display:flex;flex-direction:column;justify-content:space-between;padding:25px 20px;border:2px solid #dee2e6;background:#fff;transition:all 0.3s ease;position:relative;border-radius:8px;cursor:pointer;}
+.wvp-health-products .wvp-health-select:hover{background:#f8f9fa;border-color:#adb5bd;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+@media(max-width:768px){.wvp-health-products{grid-template-columns:1fr;}
+.wvp-health-answers{grid-template-columns:1fr;}
+.wvp-health-intensity-answers{grid-template-columns:1fr;}}
+.wvp-health-error{color:red;font-size:.9em;display:none;}
+#wvp-health-quiz .wvp-health-select img{max-width:120px;display:block;margin:0 auto 5px;}
+#wvp-health-quiz .wvp-health-name{display:block;font-weight:bold;margin-top:5px;font-size:18px;min-height:2.4em;}
+#wvp-health-quiz .wvp-health-price{display:block;margin-top:5px;font-size:20px;font-weight:bold;}
+#wvp-health-quiz .wvp-health-results-title{font-size:20px;font-weight:bold;}
+#wvp-health-quiz .wvp-health-select[data-type="premium"] .wvp-health-price{font-size:0.9em;}
+#wvp-health-quiz .wvp-health-label{display:block;font-size:.9em;color:#555;}
+#wvp-health-debug-log{background:#f5f5f5;padding:10px;border:1px solid #ccc;white-space:pre-wrap;}
+.wvp-health-note{background:#e6f4ea;border-left:5px solid #3aa15c;padding:10px;margin-top:15px;border-radius:4px;color:#2f5d3c;}
+#wvp-health-quiz .wvp-health-next{background:linear-gradient(135deg,#d4a017 0%,#b8860b 100%);color:#fff;padding:14px 28px;font-size:16px;border:none;border-radius:6px;font-weight:600;cursor:pointer;}
+#wvp-health-quiz .wvp-health-next:hover{background:linear-gradient(135deg,#b8860b 0%,#996f0a 100%);transform:translateY(-2px);box-shadow:0 4px 12px rgba(212,160,23,0.3);}
+#wvp-health-quiz .wvp-health-prev{background:#6c757d;color:#fff;padding:14px 28px;font-size:16px;border:none;border-radius:6px;margin-right:15px;font-weight:600;cursor:pointer;}
+#wvp-health-quiz .wvp-health-prev:hover{background:#5a6268;transform:translateY(-2px);box-shadow:0 4px 12px rgba(108,117,125,0.3);}
+.wvp-health-question-group{margin-bottom:30px;background:#fff;padding:25px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.05);border:1px solid #e9ecef;}
+.wvp-health-question-group p{margin-bottom:15px;font-weight:600;font-size:18px;color:#1d2327;}
+.wvp-health-answers{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:20px;}
+.wvp-health-question-group label.wvp-health-answer{display:block;margin:0;}
+.wvp-health-question-group label.wvp-health-answer input{display:none;}
+.wvp-health-question-group label.wvp-health-answer span{display:block;padding:12px 20px;border:2px solid #dee2e6;border-radius:6px;background:#f8f9fa;cursor:pointer;transition:all 0.3s ease;font-weight:500;text-align:center;}
+.wvp-health-question-group label.wvp-health-answer span:hover{background:#e9ecef;border-color:#adb5bd;}
+.wvp-health-question-group label.wvp-health-answer input:checked+span{background:linear-gradient(135deg,#d4a017 0%,#b8860b 100%);color:#fff;border-color:#d4a017;transform:translateY(-2px);box-shadow:0 4px 12px rgba(212,160,23,0.3);}
+#wvp-health-quiz .wvp-health-buy-now{display:inline-block;background:linear-gradient(135deg,#28a745 0%,#20c997 100%);color:#fff;padding:12px 20px;border-radius:6px;margin-top:15px;font-size:16px;font-weight:600;text-decoration:none;transition:all 0.3s ease;}
+#wvp-health-quiz .wvp-health-buy-now:hover{background:linear-gradient(135deg,#20c997 0%,#17a2b8 100%);transform:translateY(-2px);box-shadow:0 4px 12px rgba(40,167,69,0.3);color:#fff;text-decoration:none;}
+.wvp-health-desc{margin-top:10px;font-size:.9em;color:#333;}
+#wvp-health-quiz .wvp-health-select[data-type="package"]{border-color:#d4a017;background:linear-gradient(135deg,#d4a017 0%,#b8860b 100%);color:#fff;transform:translateY(-4px);box-shadow:0 6px 20px rgba(212,160,23,0.3);}
+#wvp-health-quiz .wvp-health-select[data-type="package"] .wvp-health-label{color:#fff;font-weight:bold;}
+#wvp-health-quiz .wvp-health-select[data-type="package"] .wvp-health-name{color:#fff;}
+#wvp-health-quiz .wvp-health-select[data-type="package"] .wvp-health-price{color:#fff;}
+#wvp-health-explanations .wvp-health-greeting{font-size:20px;font-weight:bold;display:block;margin-bottom:5px;}
+
+/* Survey Header */
+.wvp-survey-header{text-align:center;padding:30px 20px;background:linear-gradient(135deg,#f8f9fa 0%,#e9ecef 100%);border-radius:8px;margin-bottom:30px;}
+.survey-title{font-size:28px;font-weight:600;margin-bottom:20px;color:#1d2327;}
+.survey-progress{margin:20px 0;}
+.progress-bar{width:100%;height:8px;background:#e9ecef;border-radius:4px;overflow:hidden;margin-bottom:10px;}
+.progress-fill{height:100%;background:linear-gradient(135deg,#d4a017 0%,#b8860b 100%);transition:width 0.3s ease;}
+.progress-text{font-size:14px;color:#646970;font-weight:500;}
+.survey-tip{font-size:14px;color:#6c757d;margin-top:15px;padding:10px;background:rgba(255,193,7,0.1);border-radius:6px;border-left:3px solid #ffc107;}
+.survey-navigation{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #e9ecef;}
+
+/* Intro text styles */
+#wvp-health-quiz .wvp-health-intro{text-align:center;padding:30px 20px;background:linear-gradient(135deg,#f8f9fa 0%,#e9ecef 100%);border-radius:8px;margin-bottom:30px;}
+#wvp-health-quiz .wvp-health-intro-title{font-size:28px;font-weight:600;margin-bottom:10px;color:#1d2327;}
+#wvp-health-quiz .wvp-health-intro-desc{font-size:16px;margin-bottom:25px;color:#646970;line-height:1.6;}
+
+/* Notice shown after quiz completion */
+.wvp-health-complete-notice{border:2px solid #ffc107;background:#fff8e1;padding:15px;margin-bottom:20px;text-align:center;font-weight:bold;border-radius:4px;}
+.wvp-health-status{padding:10px;margin-top:15px;border-radius:4px;color:#fff;font-weight:bold;text-align:center;}
+.wvp-health-status.green{background:#28a745;}
+.wvp-health-status.orange{background:#fd7e14;}
+.wvp-health-status.red{background:#dc3545;}
+
+/* Gauge indicator */
+.wvp-health-gauge{width:150px;height:75px;border:10px solid #ccc;border-bottom:none;border-radius:150px 150px 0 0;position:relative;margin:20px auto;}
+.wvp-health-gauge-needle{position:absolute;bottom:0;left:50%;width:8px;height:70px;background:#28a745;transform-origin:bottom center;transform:rotate(-60deg);transition:transform .3s ease;}
+.wvp-health-gauge-needle.orange{background:#fd7e14;transform:rotate(0deg);}
+.wvp-health-gauge-needle.red{background:#dc3545;transform:rotate(60deg);}
+.wvp-health-gauge-labels{display:flex;justify-content:space-between;margin-top:5px;font-size:12px;font-weight:bold;}
+.wvp-health-gauge-labels span{flex:1;text-align:center;}
+.wvp-health-gauge-labels span:first-child{text-align:left;}
+.wvp-health-gauge-labels span:last-child{text-align:right;}
+.wvp-health-gauge-count{text-align:center;margin-top:5px;font-weight:bold;}
+.wvp-health-overall h3{text-align:center;margin-bottom:5px;}
+
+/* User welcome notice */
+.wvp-health-user-notice{background:#e6f4ea;border:1px solid #3aa15c;border-radius:4px;padding:15px;margin-bottom:20px;color:#2f5d3c;}
+.wvp-health-user-notice p{margin:0 0 5px 0;}
+.wvp-health-user-notice p:last-child{margin-bottom:0;}
+
+/* Intensity levels styles */
+.wvp-health-intensity-group{margin-top:20px;padding:20px;background:linear-gradient(135deg,#e8f5e8 0%,#d4edda 100%);border-radius:8px;border:1px solid #28a745;}
+.wvp-intensity-label{font-weight:600;margin-bottom:12px;color:#155724;font-size:16px;}
+.wvp-health-intensity-answers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.wvp-health-intensity-group label.wvp-health-intensity{display:block;margin:0;}
+.wvp-health-intensity-group label.wvp-health-intensity input{display:none;}
+.wvp-health-intensity-group label.wvp-health-intensity span{display:block;padding:8px 16px;border:2px solid #dee2e6;border-radius:6px;background:#fff;cursor:pointer;transition:all 0.3s ease;font-size:14px;font-weight:500;text-align:center;}
+.wvp-health-intensity-group label.wvp-health-intensity span:hover{background:#f8f9fa;border-color:#adb5bd;}
+.wvp-health-intensity-group label.wvp-health-intensity input:checked+span{background:linear-gradient(135deg,#28a745 0%,#20c997 100%);color:#fff;border-color:#28a745;transform:translateY(-1px);box-shadow:0 2px 8px rgba(40,167,69,0.3);}
+
+/* Body Map Results */
+.wvp-body-map-section{padding:30px 0;}
+.body-map-header{text-align:center;margin-bottom:40px;}
+.results-title{font-size:32px;font-weight:600;margin-bottom:10px;color:#1d2327;}
+.results-subtitle{font-size:16px;color:#646970;}
+.body-map-container{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:40px;}
+.body-map-visual{background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);text-align:center;}
+.body-svg{max-width:300px;width:100%;height:auto;}
+.body-region{cursor:pointer;transition:all 0.3s ease;stroke:#fff;stroke-width:2;}
+.body-region:hover{opacity:1;transform:scale(1.05);}
+.region-label{font-size:14px;font-weight:600;fill:#fff;pointer-events:none;}
+.region-details{background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);}
+.region-title{font-size:24px;font-weight:600;margin-bottom:20px;color:#1d2327;}
+.region-analysis p{margin-bottom:15px;line-height:1.6;}
+.region-plan-btn{background:linear-gradient(135deg,#d4a017 0%,#b8860b 100%);color:#fff;border:none;padding:12px 24px;border-radius:6px;font-weight:600;cursor:pointer;margin-top:15px;}
+.region-plan-btn:hover{background:linear-gradient(135deg,#b8860b 0%,#996f0a 100%);transform:translateY(-2px);box-shadow:0 4px 12px rgba(212,160,23,0.3);}
+.cause-effect-solution{background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:30px;}
+.cause-effect-solution h3{font-size:24px;font-weight:600;margin-bottom:25px;color:#1d2327;text-align:center;}
+.solution-section{margin-bottom:25px;}
+.solution-section h4{font-size:18px;font-weight:600;margin-bottom:10px;color:#1d2327;}
+.solution-list{list-style:none;padding:0;}
+.solution-list li{padding:8px 0;border-bottom:1px solid #e9ecef;}
+.solution-list li:last-child{border-bottom:none;}
+.results-navigation{text-align:center;margin-top:30px;}
+
+/* Product Recommendations */
+.wvp-recommendations-section{padding:30px 0;}
+.recommendations-header{text-align:center;margin-bottom:40px;}
+.recommendations-title{font-size:32px;font-weight:600;margin-bottom:10px;color:#1d2327;}
+.recommendations-subtitle{font-size:16px;color:#646970;}
+.product-recommendations{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:25px;margin-bottom:40px;}
+.product-card{background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);border:2px solid transparent;transition:all 0.3s ease;}
+.product-card:hover{border-color:#d4a017;transform:translateY(-5px);box-shadow:0 8px 30px rgba(212,160,23,0.2);}
+.product-name{font-size:20px;font-weight:600;margin-bottom:5px;color:#1d2327;}
+.product-purpose{font-style:italic;color:#6c757d;margin-bottom:15px;}
+.product-dosage,.product-reason{margin-bottom:12px;line-height:1.5;}
+.product-actions{margin-top:20px;display:flex;gap:10px;}
+.product-details-btn{background:#f8f9fa;color:#495057;border:2px solid #dee2e6;padding:10px 16px;border-radius:6px;font-weight:500;cursor:pointer;transition:all 0.3s ease;}
+.product-details-btn:hover{background:#e9ecef;border-color:#adb5bd;}
+.add-to-cart-btn{background:linear-gradient(135deg,#28a745 0%,#20c997 100%);color:#fff;border:none;padding:10px 16px;border-radius:6px;font-weight:600;cursor:pointer;transition:all 0.3s ease;}
+.add-to-cart-btn:hover{background:linear-gradient(135deg,#20c997 0%,#17a2b8 100%);transform:translateY(-2px);box-shadow:0 4px 12px rgba(40,167,69,0.3);}
+.package-action{text-align:center;margin-bottom:40px;padding:30px;background:linear-gradient(135deg,#e8f5e8 0%,#d4edda 100%);border-radius:12px;border:2px solid #28a745;}
+.add-package-btn{background:linear-gradient(135deg,#d4a017 0%,#b8860b 100%);color:#fff;border:none;padding:16px 32px;border-radius:8px;font-size:18px;font-weight:600;cursor:pointer;margin-bottom:10px;}
+.add-package-btn:hover{background:linear-gradient(135deg,#b8860b 0%,#996f0a 100%);transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,160,23,0.3);}
+.package-note{font-size:14px;color:#155724;margin:0;}
+.daily-plan-card{background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);margin-bottom:30px;}
+.daily-plan-card h3{font-size:24px;font-weight:600;margin-bottom:20px;color:#1d2327;text-align:center;}
+.daily-schedule{margin-bottom:25px;}
+.schedule-item{display:grid;grid-template-columns:80px 1fr auto;gap:15px;padding:12px 0;border-bottom:1px solid #e9ecef;align-items:center;}
+.schedule-item:last-child{border-bottom:none;}
+.time{font-weight:600;color:#495057;font-size:14px;}
+.product{font-weight:500;color:#1d2327;}
+.note{font-size:12px;color:#6c757d;font-style:italic;}
+.plan-actions{display:flex;gap:15px;justify-content:center;}
+.email-plan-btn,.pdf-plan-btn{background:#007cba;color:#fff;border:none;padding:10px 20px;border-radius:6px;font-weight:500;cursor:pointer;}
+.email-plan-btn:hover,.pdf-plan-btn:hover{background:#005a87;}
+.important-notice{background:#fff3cd;border:2px solid #ffc107;border-radius:8px;padding:20px;margin-bottom:30px;}
+.important-notice h4{color:#856404;margin-bottom:10px;}
+.important-notice p{color:#856404;margin-bottom:8px;line-height:1.5;}
+.important-notice p:last-child{margin-bottom:0;}
+.cta-section{background:#fff;padding:40px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);text-align:center;margin-bottom:30px;}
+.cta-section h3{font-size:28px;font-weight:600;margin-bottom:10px;color:#1d2327;}
+.cta-section p{font-size:16px;color:#646970;margin-bottom:25px;}
+.cta-buttons{display:flex;gap:15px;justify-content:center;margin-bottom:20px;}
+.cta-primary{background:linear-gradient(135deg,#d4a017 0%,#b8860b 100%);color:#fff;border:none;padding:14px 28px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;}
+.cta-primary:hover{background:linear-gradient(135deg,#b8860b 0%,#996f0a 100%);transform:translateY(-2px);box-shadow:0 6px 20px rgba(212,160,23,0.3);}
+.cta-secondary{background:#fff;color:#495057;border:2px solid #dee2e6;padding:14px 28px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;}
+.cta-secondary:hover{background:#f8f9fa;border-color:#adb5bd;}
+.social-proof{margin-top:15px;}
+.rating{color:#ffc107;font-weight:600;margin-right:10px;}
+.reviews{color:#6c757d;font-size:14px;}
+.recommendations-navigation{text-align:center;margin-top:30px;}
+
+@media(max-width:768px){
+.body-map-container{grid-template-columns:1fr;gap:20px;}
+.body-map-visual{padding:20px;}
+.region-details{padding:20px;}
+.cause-effect-solution{padding:20px;}
+.product-recommendations{grid-template-columns:1fr;}
+.product-actions{flex-direction:column;}
+.cta-buttons{flex-direction:column;align-items:center;}
+.cta-primary,.cta-secondary{width:100%;max-width:300px;}
+.schedule-item{grid-template-columns:60px 1fr;gap:10px;}
+.note{grid-column:2;}
+.plan-actions{flex-direction:column;align-items:center;}
+.email-plan-btn,.pdf-plan-btn{width:100%;max-width:200px;}
+}

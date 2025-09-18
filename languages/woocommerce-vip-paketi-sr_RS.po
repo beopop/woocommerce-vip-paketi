@@ -1,0 +1,846 @@
+# Serbian (Serbia) language file for WooCommerce VIP Paketi
+# Copyright (C) 2024 WooCommerce VIP Paketi
+# This file is distributed under the same license as the WooCommerce VIP Paketi package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WooCommerce VIP Paketi 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Serbian\n"
+"Language: sr_RS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Generator: Poedit 3.0\n"
+
+# Main Menu Items
+msgid "WooCommerce VIP Paketi"
+msgstr "WooCommerce VIP Пакети"
+
+msgid "VIP Paketi"
+msgstr "VIP Пакети"
+
+msgid "General Settings"
+msgstr "Опште Поставке"
+
+msgid "Settings"
+msgstr "Подешавања"
+
+msgid "VIP Codes"
+msgstr "VIP Кодови"
+
+msgid "Packages"
+msgstr "Пакети"
+
+msgid "Product Settings"
+msgstr "Подешавања Производа"
+
+msgid "Products"
+msgstr "Производи"
+
+msgid "Reports"
+msgstr "Извештаји"
+
+# Settings Page
+msgid "General"
+msgstr "Опште"
+
+msgid "VIP"
+msgstr "ВИП"
+
+msgid "Integrations"
+msgstr "Интеграције"
+
+msgid "Enable VIP Pricing"
+msgstr "Укључи VIP Цене"
+
+msgid "Enable special VIP pricing for members"
+msgstr "Укључи специјалне VIP цене за чланове"
+
+msgid "VIP Price Label"
+msgstr "Ознака VIP Цене"
+
+msgid "Text to display next to VIP prices (e.g., 'VIP Price')"
+msgstr "Текст који се приказује поред VIP цена (нпр. 'VIP Цена')"
+
+msgid "VIP Price"
+msgstr "VIP Цена"
+
+msgid "Non-VIP Display Format"
+msgstr "Формат Приказа за Не-VIP"
+
+msgid "How to display VIP prices to non-VIP users"
+msgstr "Како приказати VIP цене не-VIP корисницима"
+
+msgid "Show both regular and VIP prices"
+msgstr "Прикажи и редовне и VIP цене"
+
+msgid "Show teaser message only"
+msgstr "Прикажи само tizer поруку"
+
+msgid "Show regular prices only"
+msgstr "Прикажи само редовне цене"
+
+msgid "Package Settings"
+msgstr "Подешавања Пакета"
+
+msgid "Enable Package System"
+msgstr "Укључи Систем Пакета"
+
+msgid "Enable variable product packages with discounts"
+msgstr "Укључи варијабилне пакете производа са попустима"
+
+msgid "Default Package Sizes"
+msgstr "Подразумеване Величине Пакета"
+
+msgid "Comma-separated list of default package sizes (e.g., 2,3,4,5,6)"
+msgstr "Списак подразумеваних величина пакета одвојених запетом (нпр. 2,3,4,5,6)"
+
+msgid "Minimum Package Size"
+msgstr "Минимална Величина Пакета"
+
+msgid "Maximum Package Size"
+msgstr "Максимална Величина Пакета"
+
+msgid "Package Discount Tiers"
+msgstr "Нивои Попуста за Пакете"
+
+# VIP Codes Page
+msgid "VIP Code Management"
+msgstr "Управљање VIP Кодовима"
+
+msgid "Add new VIP codes, import from CSV, and manage existing codes."
+msgstr "Додај нове VIP кодове, увези из CSV-а и управљај постојећим кодовима."
+
+msgid "VIP Codes Overview"
+msgstr "Преглед VIP Кодова"
+
+msgid "Total Codes"
+msgstr "Укупно Кодова"
+
+msgid "Active"
+msgstr "Активни"
+
+msgid "Used"
+msgstr "Искоришћени"
+
+msgid "Expired"
+msgstr "Истекли"
+
+msgid "Add New Code"
+msgstr "Додај Нови Код"
+
+msgid "Import Codes"
+msgstr "Увези Кодове"
+
+msgid "Export All"
+msgstr "Извези Све"
+
+msgid "Code"
+msgstr "Код"
+
+msgid "Email"
+msgstr "Имејл"
+
+msgid "Domain"
+msgstr "Домен"
+
+msgid "Max Uses"
+msgstr "Макс. Коришћења"
+
+msgid "Current Uses"
+msgstr "Тренутна Коришћења"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Expires"
+msgstr "Истиче"
+
+msgid "Actions"
+msgstr "Акције"
+
+msgid "Edit"
+msgstr "Измени"
+
+msgid "Delete"
+msgstr "Обриши"
+
+msgid "Activate"
+msgstr "Активирај"
+
+msgid "Deactivate"
+msgstr "Деактивирај"
+
+msgid "Search codes..."
+msgstr "Претражи кодове..."
+
+msgid "All Statuses"
+msgstr "Сви Статуси"
+
+msgid "Filter"
+msgstr "Филтер"
+
+msgid "Bulk Actions"
+msgstr "Групне Акције"
+
+msgid "Apply"
+msgstr "Примени"
+
+msgid "No codes found"
+msgstr "Није пронађен ниједан код"
+
+# Packages Page
+msgid "Package Management"
+msgstr "Управљање Пакетима"
+
+msgid "Create and manage variable product packages with different discount tiers."
+msgstr "Креирај и управљај варијабилним пакетима производа са различитим нивоима попуста."
+
+msgid "Package Overview"
+msgstr "Преглед Пакета"
+
+msgid "Total Packages"
+msgstr "Укупно Пакета"
+
+msgid "Draft"
+msgstr "Нацрт"
+
+msgid "Inactive"
+msgstr "Неактивни"
+
+msgid "Create New Package"
+msgstr "Креирај Нови Пакет"
+
+msgid "Package Name"
+msgstr "Назив Пакета"
+
+msgid "Min Items"
+msgstr "Мин. Ставки"
+
+msgid "Max Items"
+msgstr "Макс. Ставки"
+
+msgid "Regular Discount"
+msgstr "Редован Попуст"
+
+msgid "VIP Discount"
+msgstr "VIP Попуст"
+
+msgid "No packages created yet"
+msgstr "Још увек нису креирани пакети"
+
+msgid "Create your first package to get started"
+msgstr "Креирај свој први пакет да би започео"
+
+# Products Page
+msgid "Product Settings"
+msgstr "Подешавања Производа"
+
+msgid "Configure VIP pricing and package availability for your products."
+msgstr "Подеси VIP цене и доступност пакета за твоје производе."
+
+msgid "Product Overview"
+msgstr "Преглед Производа"
+
+msgid "Total Products"
+msgstr "Укупно Производа"
+
+msgid "VIP Pricing Enabled"
+msgstr "VIP Цене Укључене"
+
+msgid "Package Allowed"
+msgstr "Пакет Дозвољен"
+
+msgid "Search products..."
+msgstr "Претражи производе..."
+
+msgid "Enable VIP Pricing"
+msgstr "Укључи VIP Цене"
+
+msgid "VIP Price:"
+msgstr "VIP Цена:"
+
+msgid "Allow in Packages"
+msgstr "Дозволи у Пакетима"
+
+msgid "Edit Product"
+msgstr "Измени Производ"
+
+msgid "View"
+msgstr "Прикажи"
+
+msgid "Save %s (%s%%)"
+msgstr "Уштеда %s (%s%%)"
+
+msgid "Select All on Page"
+msgstr "Изабери Све на Страници"
+
+msgid "Deselect All"
+msgstr "Поништи Избор Свих"
+
+msgid "Enable VIP pricing for selected"
+msgstr "Укључи VIP цене за изабране"
+
+msgid "Disable VIP pricing for selected"
+msgstr "Искључи VIP цене за изабране"
+
+msgid "Allow in packages"
+msgstr "Дозволи у пакетима"
+
+msgid "Disallow in packages"
+msgstr "Забрани у пакетима"
+
+msgid "Product settings updated successfully."
+msgstr "Подешавања производа су успешно ажурирана."
+
+msgid "No products found. Please create some WooCommerce products first."
+msgstr "Није пронађен ниједан производ. Молимо те да прво креираш неке WooCommerce производе."
+
+msgid "Create Product"
+msgstr "Креирај Производ"
+
+# Package Templates
+msgid "Configure Your Package"
+msgstr "Подеси Свој Пакет"
+
+msgid "Select between %d and %d products from our curated selection. The more you add, the more you save!"
+msgstr "Изабери између %d и %d производа из нашег курираног избора. Што више додаш, више уштедиш!"
+
+msgid "VIP members get additional discounts on all packages!"
+msgstr "VIP чланови добијају додатне попусте на све пакете!"
+
+msgid "Learn more"
+msgstr "Сазнај више"
+
+msgid "Choose Package Size"
+msgstr "Изабери Величину Пакета"
+
+msgid "Select your preferred package size to see available products and pricing."
+msgstr "Изабери жељену величину пакета да би видео доступне производе и цене."
+
+msgid "Package Details"
+msgstr "Детаљи Пакета"
+
+msgid "Products to select:"
+msgstr "Производи за избор:"
+
+msgid "Your discount:"
+msgstr "Твој попуст:"
+
+msgid "VIP bonus discount:"
+msgstr "VIP бонус попуст:"
+
+msgid "Select Your Products"
+msgstr "Изабери Своје Производе"
+
+msgid "%d products selected"
+msgstr "%d производа изабрано"
+
+msgid "Search products:"
+msgstr "Претражи производе:"
+
+msgid "Type to search..."
+msgstr "Куцај за претрагу..."
+
+msgid "Filter by category:"
+msgstr "Филтриraj по категорији:"
+
+msgid "All categories"
+msgstr "Све категорије"
+
+msgid "Sort by:"
+msgstr "Сортирај по:"
+
+msgid "Name"
+msgstr "Назив"
+
+msgid "Price"
+msgstr "Цена"
+
+msgid "Popularity"
+msgstr "Популарност"
+
+msgid "Regular:"
+msgstr "Редовна:"
+
+msgid "VIP:"
+msgstr "VIP:"
+
+msgid "Save %s"
+msgstr "Uštedi %s"
+
+msgid "Upgrade to VIP for special pricing"
+msgstr "Унапреди на VIP за специјалне цене"
+
+msgid "Select"
+msgstr "Изабери"
+
+msgid "Remove"
+msgstr "Уклони"
+
+msgid "Clear All"
+msgstr "Обриши Све"
+
+msgid "Continue"
+msgstr "Настави"
+
+msgid "You have reached the maximum number of products for this package size."
+msgstr "Достигао си максималан број производа за ову величину пакета."
+
+msgid "Please select at least one product."
+msgstr "Молимо те да изабереш најмање један производ."
+
+msgid "Select %d more products to complete your package"
+msgstr "Изабери још %d производа да завршиш свој пакет"
+
+msgid "Package complete! Click continue to proceed."
+msgstr "Пакет завршен! Кликни настави да наставиш."
+
+msgid "Select products to see your package total"
+msgstr "Изабери производе да видиш укупну цену пакета"
+
+# Package Summary
+msgid "Package Summary"
+msgstr "Резиме Пакета"
+
+msgid "Selected Products"
+msgstr "Изабрани Производи"
+
+msgid "Pricing Breakdown"
+msgstr "Разбивка Цена"
+
+msgid "Subtotal:"
+msgstr "Међузбир:"
+
+msgid "Package Discount:"
+msgstr "Попуст за Пакет:"
+
+msgid "VIP Additional Discount:"
+msgstr "VIP Додатни Попуст:"
+
+msgid "Total Savings:"
+msgstr "Укупна Уштеда:"
+
+msgid "Package Total:"
+msgstr "Укупно за Пакет:"
+
+msgid "Upgrade to VIP and save even more!"
+msgstr "Унапреди на VIP и уштеди још више!"
+
+msgid "With VIP membership, you could save an additional"
+msgstr "Са VIP чланством, могао би да уштедиш додатних"
+
+msgid "on this package!"
+msgstr "на овом пакету!"
+
+msgid "Learn More About VIP"
+msgstr "Сазнај Више о VIP"
+
+msgid "Back to Selection"
+msgstr "Назад на Избор"
+
+msgid "Save for Later"
+msgstr "Сачувај за Касније"
+
+msgid "Add to Cart"
+msgstr "Додај у Корпу"
+
+# Cart Messages
+msgid "Package Added to Cart!"
+msgstr "Пакет Додат у Корпу!"
+
+msgid "Your custom package has been successfully added to your cart."
+msgstr "Твој прилагођени пакет је успешно додат у корпу."
+
+msgid "View Cart"
+msgstr "Прикажи Корпу"
+
+msgid "Proceed to Checkout"
+msgstr "Настави на Наплату"
+
+msgid "Continue Shopping"
+msgstr "Настави са Куповином"
+
+msgid "Adding Package to Cart..."
+msgstr "Додавање Пакета у Корпу..."
+
+msgid "Please wait while we process your package selection."
+msgstr "Молимо сачекај док обрађујемо твој избор пакета."
+
+msgid "Error Adding Package"
+msgstr "Грешка при Додавању Пакета"
+
+msgid "There was an error adding your package to the cart. Please try again."
+msgstr "Дошло је до грешке при додавању пакета у корпу. Молимо покушај поново."
+
+msgid "Try Again"
+msgstr "Покушај Поново"
+
+msgid "Edit Package"
+msgstr "Измени Пакет"
+
+# VIP Account Status
+msgid "VIP Membership Status"
+msgstr "Статус VIP Чланства"
+
+msgid "VIP Member"
+msgstr "VIP Члан"
+
+msgid "Member since %s"
+msgstr "Члан од %s"
+
+msgid "Active VIP Member"
+msgstr "Активни VIP Члан"
+
+msgid "Membership Type:"
+msgstr "Тип Чланства:"
+
+msgid "WooCommerce Memberships"
+msgstr "WooCommerce Чланства"
+
+msgid "WooCommerce Subscriptions"
+msgstr "WooCommerce Претплате"
+
+msgid "VIP Code"
+msgstr "VIP Код"
+
+msgid "Manual Assignment"
+msgstr "Ручна Додела"
+
+msgid "VIP Role"
+msgstr "VIP Улога"
+
+msgid "VIP Code Used:"
+msgstr "Коришћен VIP Код:"
+
+msgid "Your VIP Benefits:"
+msgstr "Твоје VIP Погодности:"
+
+msgid "Special pricing on VIP products"
+msgstr "Специјалне цене на VIP производе"
+
+msgid "Additional discounts on package deals"
+msgstr "Додатни попусти на пакет понуде"
+
+msgid "Priority access to new products"
+msgstr "Приоритетни приступ новим производима"
+
+msgid "Exclusive VIP-only offers and promotions"
+msgstr "Ексклузивне понуде и промоције само за VIP"
+
+msgid "VIP Savings Summary:"
+msgstr "Резиме VIP Уштеда:"
+
+msgid "Total Saved"
+msgstr "Укупно Уштеђено"
+
+msgid "VIP Orders"
+msgstr "VIP Наруџбе"
+
+msgid "Packages Purchased"
+msgstr "Купљени Пакети"
+
+msgid "Regular Member"
+msgstr "Редован Члан"
+
+msgid "Upgrade to VIP for exclusive benefits"
+msgstr "Унапреди на VIP за ексклузивне погодности"
+
+msgid "VIP Membership Benefits:"
+msgstr "Погодности VIP Чланства:"
+
+msgid "Special VIP Pricing"
+msgstr "Специјалне VIP Цене"
+
+msgid "Get access to exclusive VIP prices on selected products"
+msgstr "Добиј приступ ексклузивним VIP ценама на изабраним производима"
+
+msgid "Enhanced Package Discounts"
+msgstr "Побољшани Попусти за Пакете"
+
+msgid "Receive additional discounts on top of regular package deals"
+msgstr "Добиј додатне попусте поред редовних пакет понуда"
+
+msgid "Priority Access"
+msgstr "Приоритетни Приступ"
+
+msgid "Be the first to access new products and limited offers"
+msgstr "Буди први који ће приступити новим производима и ограниченим понудама"
+
+msgid "Exclusive Offers"
+msgstr "Ексклузивне Понуде"
+
+msgid "Receive VIP-only promotions and special deals"
+msgstr "Добијај промоције и специјалне понуде само за VIP"
+
+msgid "Have a VIP Code?"
+msgstr "Имаш VIP Код?"
+
+msgid "Enter your VIP code"
+msgstr "Унеси свој VIP код"
+
+msgid "Activate"
+msgstr "Активирај"
+
+msgid "Please enter a VIP code."
+msgstr "Молимо унеси VIP код."
+
+msgid "Activating..."
+msgstr "Активирам..."
+
+msgid "VIP code activated successfully! Please refresh the page."
+msgstr "VIP код успешно активиран! Молимо освежи страницу."
+
+msgid "Invalid or expired VIP code."
+msgstr "Неважећи или истекли VIP код."
+
+msgid "Error activating VIP code. Please try again."
+msgstr "Грешка при активирању VIP кода. Молимо покушај поново."
+
+msgid "Contact Us for VIP Access"
+msgstr "Контактирај Нас за VIP Приступ"
+
+msgid "VIP Membership Inquiry"
+msgstr "Упит о VIP Чланству"
+
+# Error Messages
+msgid "WooCommerce is required for this plugin to work."
+msgstr "WooCommerce је потребан да би овај plugin радио."
+
+msgid "Package post type is not registered. Please activate the plugin properly."
+msgstr "Package post type није регистрован. Молимо активирај plugin правилно."
+
+msgid "No products are currently enabled for packages. Please configure products in the Product Settings page."
+msgstr "Тренутно нису омогућени производи за пакете. Молимо подеси производе на страници Подешавања Производа."
+
+msgid "Configure Products"
+msgstr "Подеси Производе"
+
+msgid "Select which products can be included in this package:"
+msgstr "Изабери које производе можеш укључити у овај пакет:"
+
+msgid "Select All"
+msgstr "Изабери Све"
+
+# VIP Package Post Type
+msgid "VIP Packages"
+msgstr "VIP Пакети"
+
+msgid "VIP Package"
+msgstr "VIP Пакет"
+
+msgid "Add New Package"
+msgstr "Додај Нови Пакет"
+
+msgid "Edit Package"
+msgstr "Измени Пакет"
+
+msgid "New Package"
+msgstr "Нови Пакет"
+
+msgid "View Package"
+msgstr "Прикажи Пакет"
+
+msgid "Search Packages"
+msgstr "Претражи Пакете"
+
+msgid "No packages found"
+msgstr "Нема пронађених пакета"
+
+msgid "No packages found in trash"
+msgstr "Нема пронађених пакета у корпи"
+
+msgid "Package Configuration"
+msgstr "Подешавање Пакета"
+
+msgid "Allowed Products"
+msgstr "Дозвољени Производи"
+
+msgid "Discount Rules"
+msgstr "Правила Попуста"
+
+# Package Meta Fields
+msgid "Minimum Items"
+msgstr "Минимум Ставки"
+
+msgid "Maximum Items"
+msgstr "Максимум Ставки"
+
+msgid "Package Sizes"
+msgstr "Величине Пакета"
+
+msgid "Comma-separated list (e.g., 2,3,4,5,6)"
+msgstr "Списак одвојен запетом (нпр. 2,3,4,5,6)"
+
+msgid "Allow Coupons"
+msgstr "Дозволи Купоне"
+
+msgid "Allow coupons to be used with this package"
+msgstr "Дозволи коришћење купона са овим пакетом"
+
+msgid "Show Discount Table"
+msgstr "Прикажи Табелу Попуста"
+
+msgid "Display discount comparison table on package page"
+msgstr "Прикажи табелу поређења попуста на страници пакета"
+
+msgid "Show for Non-VIP"
+msgstr "Прикажи за Не-VIP"
+
+msgid "Make this package visible to non-VIP users"
+msgstr "Учини овај пакет видљивим за не-VIP кориснике"
+
+msgid "Package Status"
+msgstr "Статус Пакета"
+
+msgid "Configure discount percentages for different package sizes:"
+msgstr "Подеси процентe попуста за различите величине пакета:"
+
+msgid "Package Size"
+msgstr "Величина Пакета"
+
+msgid "Regular Discount (%)"
+msgstr "Редован Попуст (%)"
+
+msgid "VIP Discount (%)"
+msgstr "VIP Попуст (%)"
+
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d ставка"
+msgstr[1] "%d ставке"
+msgstr[2] "%d ставки"
+
+msgid "%d Product"
+msgid_plural "%d Products"
+msgstr[0] "%d Производ"
+msgstr[1] "%d Производа"
+msgstr[2] "%d Производа"
+
+msgid "VIP discounts are applied on top of regular discounts. For example: if regular discount is 10% and VIP discount is 5%, the total VIP discount will be 14.5% (10% + 5% of remaining 90%)."
+msgstr "VIP попусти се примењују поред редовних попуста. На пример: ако је редован попуст 10% а VIP попуст 5%, укупни VIP попуст ће бити 14.5% (10% + 5% од преосталих 90%)."
+
+# Activator Messages  
+msgid "VIP Member"
+msgstr "VIP Члан"
+
+# Reports
+msgid "VIP Usage Statistics"
+msgstr "Статистике VIP Коришћења"
+
+msgid "Package Performance"
+msgstr "Перформансе Пакета"
+
+msgid "Recent Activity"
+msgstr "Скорашња Активност"
+
+msgid "Export Reports"
+msgstr "Извези Извештаје"
+
+# Success/Error Messages
+msgid "Settings saved successfully."
+msgstr "Подешавања успешно сачувана."
+
+msgid "Invalid or expired VIP code"
+msgstr "Неважећи или истекли VIP код"
+
+msgid "VIP code verified successfully!"
+msgstr "VIP код успешно верификован!"
+
+msgid "Package saved successfully!"
+msgstr "Пакет успешно сачуван!"
+
+msgid "Failed to add package to cart."
+msgstr "Неуспешно додавање пакета у корпу."
+
+msgid "Error adding package to cart. Please try again."
+msgstr "Грешка при додавању пакета у корпу. Молимо покушај поново."
+
+msgid "Network error occurred. Please check your connection and try again."
+msgstr "Дошло је до мрежне грешке. Молимо провери конекцију и покушај поново."
+
+msgid "Request timed out. Please try again."
+msgstr "Захтев је истекао. Молимо покушај поново."
+
+msgid "Unknown error occurred."
+msgstr "Дошла је до непознате грешке."
+
+msgid "No products selected to save."
+msgstr "Нису изабрани производи за чување."
+
+msgid "No products selected to add to cart."
+msgstr "Нису изабрани производи за додавање у корпу."
+
+msgid "Adding to Cart..."
+msgstr "Додавање у Корпу..."
+
+msgid "Package added to cart successfully!"
+msgstr "Пакет успешно додат у корпу!"
+
+msgid "Cart Summary"
+msgstr "Резиме Корпе"
+
+msgid "Cart Total:"
+msgstr "Укупно у Корпи:"
+
+msgid "Checkout"
+msgstr "Наплата"
+
+# Checkout VIP Code
+msgid "VIP Code (Optional)"
+msgstr "VIP Код (Опционо)"
+
+msgid "Enter VIP code if you have one"
+msgstr "Унеси VIP код ако га имаш"
+
+msgid "Verify Code"
+msgstr "Верификуј Код"
+
+msgid "Verifying..."
+msgstr "Верификујем..."
+
+msgid "Code verified! VIP pricing applied."
+msgstr "Код верификован! VIP цене примењене."
+
+msgid "Loading..."
+msgstr "Учитавам..."
+
+msgid "An error occurred. Please try again."
+msgstr "Дошло је до грешке. Молимо покушај поново."
+
+msgid "Success!"
+msgstr "Успех!"
+
+msgid "Enter VIP code"
+msgstr "Унеси VIP код"
+
+msgid "Code verified successfully!"
+msgstr "Код успешно верификован!"
+
+msgid "Invalid or expired VIP code"
+msgstr "Неважећи или истекли VIP код"
+
+msgid "Please select a package size"
+msgstr "Молимо изабери величину пакета"
+
+msgid "Please select products for your package"
+msgstr "Молимо изабери производе за свој пакет"
+
+msgid "Maximum number of products selected"
+msgstr "Изабран максималан број производа"
+
+msgid "Minimum {min} products required"
+msgstr "Потребно минимум {min} производа"
+
+msgid "Already a VIP member?"
+msgstr "Već ste VIP član?"
+
+msgid "VIP kod je pronađen. Molimo potvrdite vašu email adresu ili telefon da biste nastavili."
+msgstr "VIP kod je pronađen. Molimo potvrdite vašu email adresu ili telefon da biste nastavili."
+
+msgid "VIP kod je pronađen sa podacima za naplatu. Molimo potvrdite vašu email adresu ili telefon da automatski popunimo formu."
+msgstr "VIP kod je pronađen sa podacima za naplatu. Molimo potvrdite vašu email adresu ili telefon da automatski popunimo formu."
