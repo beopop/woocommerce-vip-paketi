@@ -7251,26 +7251,103 @@ function wvp_generate_step_2() {
     function autoSaveToDatabase() {
         console.log('🔄 Auto-save: Starting save process...');
 
-        const form = document.querySelector('.wvp-health-quiz-form');
-        if (!form) {
-            console.log('❌ Auto-save: Form not found');
+        // Get form data from question page
+        const firstName = document.querySelector('input[name="first_name"]')?.value?.trim() || '';
+        const lastName = document.querySelector('input[name="last_name"]')?.value?.trim() || '';
+        const email = document.querySelector('input[name="email"]')?.value?.trim() || '';
+        const phone = document.querySelector('input[name="phone"]')?.value?.trim() || '';
+        const birthYear = document.querySelector('input[name="birth_year"]')?.value || '';
+        const location = document.querySelector('input[name="location"]')?.value?.trim() || '';
+        const country = document.querySelector('input[name="country"]')?.value?.trim() || '';
+
+        // Get current answers from radio buttons (question page format)
+        const currentAnswers = {};
+        const currentIntensities = {};
+
+        // Get answers from ai-question-card format
+        document.querySelectorAll('.ai-question-card input[type="radio"]:checked').forEach(radio => {
+            if (radio.name.includes('answers[')) {
+                const match = radio.name.match(/answers\[(\d+)\]/);
+                if (match) {
+                    const questionIndex = match[1];
+                    currentAnswers[questionIndex] = radio.value;
+                    console.log('📻 Found answer:', questionIndex, '=', radio.value);
+                }
+            }
+            if (radio.name.includes('intensity[')) {
+                const match = radio.name.match(/intensity\[(\d+)\]/);
+                if (match) {
+                    const questionIndex = match[1];
+                    currentIntensities[questionIndex] = radio.value;
+                    console.log('📊 Found intensity:', questionIndex, '=', radio.value);
+                }
+            }
+        });
+
+        // Decide if we should save
+        const hasFormData = firstName && lastName;
+        const hasQuizData = Object.keys(currentAnswers).length > 0;
+
+        if (!hasFormData && !hasQuizData) {
+            console.log('⏭️ Auto-save: No data to save');
             return;
         }
 
-        const formData = new FormData(form);
-        formData.append('action', 'wvp_save_health_quiz');
+        console.log('💾 Auto-save: Preparing data...', {
+            formData: hasFormData,
+            questionsAnswered: Object.keys(currentAnswers).length,
+            intensitiesSet: Object.keys(currentIntensities).length,
+            currentAnswers: currentAnswers,
+            currentIntensities: currentIntensities
+        });
+
+        // Use the same format as main JavaScript
+        const formData = new FormData();
+        formData.append('action', 'bulletproof_save_answers');
         formData.append('nonce', '<?php echo wp_create_nonce('wvp_health_quiz_nonce'); ?>');
+        formData.append('first_name', firstName);
+        formData.append('last_name', lastName);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('birth_year', birthYear);
+        formData.append('location', location);
+        formData.append('country', country);
+
+        // Send answers and intensities in JSON format (same as main JS)
+        formData.append('answers_data', JSON.stringify(currentAnswers));
+        formData.append('intensities_data', JSON.stringify(currentIntensities));
         formData.append('auto_save', '1');
+
+        // Get session ID from localStorage (if available)
+        const sessionId = localStorage.getItem('wvp_health_quiz_session_id') || '';
+        if (sessionId) {
+            formData.append('session_id', sessionId);
+        }
 
         showSaveIndicator('saving');
 
         fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
             method: 'POST',
-            body: formData
+            body: formData,
+            credentials: 'same-origin'
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(data => {
             console.log('✅ Auto-save: Success', data);
+
+            // Store session_id and result_id for future requests
+            if (data.data && data.data.session_id) {
+                localStorage.setItem('wvp_health_quiz_session_id', data.data.session_id);
+            }
+            if (data.data && data.data.result_id) {
+                localStorage.setItem('wvp_health_quiz_result_id', data.data.result_id);
+            }
+
             showSaveIndicator('success');
         })
         .catch(error => {
@@ -7392,15 +7469,37 @@ function wvp_generate_step_2() {
         return true; // Allow form submission
     }
 
+    // Initialize session ID for consistency with main page
+    function initializeQuestionPageSession() {
+        let sessionId = localStorage.getItem('wvp_health_quiz_session_id');
+        if (!sessionId) {
+            // Generate new session ID (same format as main page)
+            sessionId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+            localStorage.setItem('wvp_health_quiz_session_id', sessionId);
+            console.log('🔄 Question page: Generated new session ID:', sessionId);
+        } else {
+            console.log('🔄 Question page: Using existing session ID:', sessionId);
+        }
+        return sessionId;
+    }
+
     // Initialize auto-save when page loads
     document.addEventListener('DOMContentLoaded', function() {
         console.log('🚀 Question page loaded - initializing auto-save...');
+
+        // Initialize session before setting up listeners
+        initializeQuestionPageSession();
+
         setupAutoSaveListeners();
 
-        // Trigger initial save to establish session
+        // Trigger initial save to establish session after a short delay
         setTimeout(() => {
             triggerAutoSave(true);
-        }, 1000);
+        }, 1500);
     });
     </script>
     <?php
