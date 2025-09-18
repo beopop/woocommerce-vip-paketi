@@ -6,11 +6,53 @@ if (!defined('ABSPATH')) {
 // Get quiz questions from options
 $questions = get_option('wvp_health_quiz_questions', array());
 
-// Parse answers and intensity data - SIMPLIFIED SYSTEM
-$answers = json_decode($result['answers'], true);
-$intensity_data = json_decode($result['intensity_data'], true);
+// Parse answers and intensity data - ROBUST SYSTEM WITH FALLBACKS
+function parse_data_robust($raw_data) {
+    if (empty($raw_data)) return array();
 
-// Ensure we have arrays
+    // Try JSON decode first
+    $decoded = json_decode($raw_data, true);
+    if (is_array($decoded)) {
+        return $decoded;
+    }
+
+    // Try PHP unserialize as fallback
+    $unserialized = @unserialize($raw_data);
+    if (is_array($unserialized)) {
+        return $unserialized;
+    }
+
+    // Try double-encoded JSON
+    if (is_string($decoded)) {
+        $double_decoded = json_decode($decoded, true);
+        if (is_array($double_decoded)) {
+            return $double_decoded;
+        }
+    }
+
+    return array();
+}
+
+$answers = parse_data_robust($result['answers']);
+$intensity_data = parse_data_robust($result['intensity_data']);
+
+// DEBUG: Show what we got from database
+$debug_info = array(
+    'raw_answers' => $result['answers'],
+    'raw_intensity' => $result['intensity_data'],
+    'raw_answers_length' => strlen($result['answers']),
+    'raw_intensity_length' => strlen($result['intensity_data']),
+    'parsed_answers' => $answers,
+    'parsed_intensity' => $intensity_data,
+    'answers_count' => count($answers),
+    'intensity_count' => count($intensity_data),
+    'json_last_error' => json_last_error_msg(),
+    'record_id' => $result['id'],
+    'session_id' => $result['session_id'] ?? 'N/A',
+    'created_at' => $result['created_at']
+);
+
+// Ensure we have arrays (should already be arrays from robust parser)
 if (!is_array($answers)) $answers = array();
 if (!is_array($intensity_data)) $intensity_data = array();
 
@@ -29,6 +71,81 @@ $completion_percentage = $total_questions > 0 ? round(($answered_questions / $to
     <h1>📊 Detaljan Izveštaj - <?php echo esc_html($result['first_name'] . ' ' . $result['last_name']); ?></h1>
 
     <a href="?page=wvp-health-quiz-results" class="button">⬅️ Nazad na listu</a>
+
+    <!-- DEBUG INFORMATION -->
+    <div class="postbox" style="margin-top: 20px; border-left: 4px solid #dc3545;">
+        <div class="postbox-header"><h2>🐛 DEBUG: Podaci iz baze (Record ID <?php echo $debug_info['record_id']; ?>)</h2></div>
+        <div class="inside">
+            <p><strong>Session ID:</strong> <code><?php echo esc_html($debug_info['session_id']); ?></code></p>
+            <p><strong>Created:</strong> <?php echo esc_html($debug_info['created_at']); ?></p>
+
+            <h4>📥 Raw Data iz Baze:</h4>
+            <p><strong>Answers field:</strong>
+                <?php if (empty($debug_info['raw_answers'])): ?>
+                    <span style="color: red;">EMPTY</span>
+                <?php else: ?>
+                    <code><?php echo esc_html($debug_info['raw_answers']); ?></code>
+                    <small>(<?php echo $debug_info['raw_answers_length']; ?> characters)</small>
+                <?php endif; ?>
+            </p>
+
+            <p><strong>Intensity field:</strong>
+                <?php if (empty($debug_info['raw_intensity'])): ?>
+                    <span style="color: red;">EMPTY</span>
+                <?php else: ?>
+                    <code><?php echo esc_html($debug_info['raw_intensity']); ?></code>
+                    <small>(<?php echo $debug_info['raw_intensity_length']; ?> characters)</small>
+                <?php endif; ?>
+            </p>
+
+            <h4>🔧 Parsed Results:</h4>
+            <p><strong>Answers parsed:</strong>
+                <?php if ($debug_info['answers_count'] > 0): ?>
+                    <span style="color: green;">✅ <?php echo $debug_info['answers_count']; ?> answers found</span>
+                <?php else: ?>
+                    <span style="color: red;">❌ No answers</span>
+                <?php endif; ?>
+            </p>
+            <p><strong>Intensity parsed:</strong>
+                <?php if ($debug_info['intensity_count'] > 0): ?>
+                    <span style="color: green;">✅ <?php echo $debug_info['intensity_count']; ?> intensities found</span>
+                <?php else: ?>
+                    <span style="color: red;">❌ No intensities</span>
+                <?php endif; ?>
+            </p>
+
+            <p><strong>Total questions in system:</strong> <?php echo count($questions); ?></p>
+
+            <h4>📊 Parsed Data Details:</h4>
+            <p><strong>Answers:</strong> <pre><?php echo esc_html(print_r($debug_info['parsed_answers'], true)); ?></pre></p>
+            <p><strong>Intensities:</strong> <pre><?php echo esc_html(print_r($debug_info['parsed_intensity'], true)); ?></pre></p>
+
+            <h4>🎯 Question Access Test:</h4>
+            <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; font-size: 12px;">
+                <tr><th>Q#</th><th>String Key Check</th><th>Integer Key Check</th><th>Final Answer</th></tr>
+                <?php for ($i = 0; $i < min(6, count($questions))): ?>
+                    <?php
+                    // Simulate admin panel logic
+                    $answer = 'Nema odgovora';
+                    $string_key_result = isset($answers[(string)$i]) ? $answers[(string)$i] : 'NOT FOUND';
+                    $integer_key_result = isset($answers[$i]) ? $answers[$i] : 'NOT FOUND';
+
+                    if (isset($answers[(string)$i])) {
+                        $answer = $answers[(string)$i];
+                    } elseif (isset($answers[$i])) {
+                        $answer = $answers[$i];
+                    }
+                    ?>
+                    <tr>
+                        <td><?php echo $i; ?></td>
+                        <td><?php echo esc_html($string_key_result); ?></td>
+                        <td><?php echo esc_html($integer_key_result); ?></td>
+                        <td><strong><?php echo esc_html($answer); ?></strong></td>
+                    </tr>
+                <?php endfor; ?>
+            </table>
+        </div>
+    </div>
 
     <!-- Quick Stats Dashboard -->
     <div class="wvp-stats-dashboard" style="margin: 20px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
