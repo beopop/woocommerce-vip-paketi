@@ -353,7 +353,9 @@ document.addEventListener('DOMContentLoaded',function(){
           formData: hasFormData,
           questionsAnswered: Object.keys(currentAnswers).length,
           intensitiesSet: Object.keys(currentIntensities).length,
-          sessionId: sessionId
+          sessionId: sessionId,
+          currentAnswers: currentAnswers,
+          currentIntensities: currentIntensities
         });
 
         const data = new FormData();
@@ -562,10 +564,18 @@ document.addEventListener('DOMContentLoaded',function(){
       }
     });
 
-    // Enhanced quiz answer listeners
+    // Enhanced quiz answer listeners with detailed debugging
+    const questionRadios = quiz.querySelectorAll('.wvp-health-question-group input[type="radio"]');
+    const intensityRadios = quiz.querySelectorAll('.wvp-health-intensity-group input[type="radio"]');
+
+    console.log('🎯 Found question radio buttons:', questionRadios.length);
+    console.log('🎯 Found intensity radio buttons:', intensityRadios.length);
+
     quiz.addEventListener('change', function(e) {
       if (e.target.type === 'radio') {
         console.log('🔘 Radio button changed:', e.target.name, '=', e.target.value);
+        console.log('🔘 Target classes:', e.target.className);
+        console.log('🔘 Parent group:', e.target.closest('.wvp-health-question-group')?.dataset?.question);
 
         // Immediate save for quiz answers - they're critical
         triggerAutoSave(true);
@@ -802,45 +812,12 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     return intensities;
   }
+  // Error clearing for form inputs - SIMPLIFIED
   quiz.querySelectorAll('input').forEach(inp=>{
     inp.addEventListener('input',()=>{
       const err=inp.parentElement.querySelector('.wvp-health-error');
       if(err){err.textContent='';err.style.display='none';}
-      saveState();
-    });
-  });
-  quiz.querySelectorAll('.wvp-health-question-group input').forEach(inp=>{
-    inp.addEventListener('change',()=>{
-      const err=inp.closest('.wvp-health-question-group').querySelector('.wvp-health-error');
-      if(err){err.textContent='';err.style.display='none';}
-
-      // Handle intensity levels display
-      if(inp.classList.contains('wvp-health-question')){
-        const questionGroup = inp.closest('.wvp-health-question-group');
-        const intensityGroup = questionGroup.querySelector('.wvp-health-intensity-group');
-        if(intensityGroup){
-          if(inp.value.toLowerCase() === 'da' && inp.checked){
-            intensityGroup.style.display = 'block';
-          } else {
-            intensityGroup.style.display = 'none';
-            // Clear intensity selection if No is selected
-            intensityGroup.querySelectorAll('input[type="radio"]').forEach(radio => {
-              radio.checked = false;
-            });
-          }
-        }
-      }
-
-      saveState();
-    });
-  });
-
-  // Add event listeners for intensity radio buttons
-  quiz.querySelectorAll('.wvp-health-intensity-radio').forEach(inp=>{
-    inp.addEventListener('change',()=>{
-      const err=inp.closest('.wvp-health-question-group').querySelector('.wvp-health-error');
-      if(err){err.textContent='';err.style.display='none';}
-      saveState();
+      // Auto-save is handled by setupAutoSaveListeners() - no duplicate calls
     });
   });
 
@@ -1171,105 +1148,9 @@ document.addEventListener('DOMContentLoaded',function(){
     console.log('🎯 Found question radios:', questionRadios.length);
     console.log('🎯 Found intensity radios:', intensityRadios.length);
 
-    // Function to immediately save answers when any radio button changes
-    function saveAnswersImmediately() {
-      const answers = {};
-      const intensities = {};
+    // Using unified auto-save system from setupAutoSaveListeners() instead of duplicated functions
 
-      // Collect all checked question radios
-      document.querySelectorAll('.wvp-health-question-group input[type="radio"]:checked').forEach(radio => {
-        const questionGroup = radio.closest('.wvp-health-question-group');
-        if (questionGroup && questionGroup.dataset.question !== undefined) {
-          const questionIndex = questionGroup.dataset.question;
-          answers[questionIndex] = radio.value;
-          console.log('📝 Question ' + questionIndex + ' = ' + radio.value);
-        }
-      });
-
-      // Collect all checked intensity radios
-      document.querySelectorAll('.wvp-health-intensity-group input[type="radio"]:checked').forEach(radio => {
-        const intensityGroup = radio.closest('.wvp-health-intensity-group');
-        const questionGroup = intensityGroup ? intensityGroup.closest('.wvp-health-question-group') : null;
-        if (questionGroup && questionGroup.dataset.question !== undefined) {
-          const questionIndex = questionGroup.dataset.question;
-          intensities[questionIndex] = radio.value;
-          console.log('📊 Intensity ' + questionIndex + ' = ' + radio.value);
-        }
-      });
-
-      console.log('💾 BULLETPROOF: Saving answers:', answers);
-      console.log('💾 BULLETPROOF: Saving intensities:', intensities);
-
-      // Send immediately to server using bulletproof save endpoint
-      const data = new FormData();
-      data.append('action', 'bulletproof_save_answers');
-      data.append('nonce', wvpHealthData.nonce);
-      data.append('session_id', sessionId || '');
-      data.append('result_id', resultId || '0');
-
-      // Add form data if available
-      const firstNameEl = document.getElementById('wvp-first-name');
-      const lastNameEl = document.getElementById('wvp-last-name');
-      const emailEl = document.getElementById('wvp-email');
-      const phoneEl = document.getElementById('wvp-phone');
-      const yearEl = document.getElementById('wvp-year');
-      const locationEl = document.getElementById('wvp-location');
-      const countryEl = document.getElementById('wvp-country');
-
-      if (firstNameEl) data.append('first_name', firstNameEl.value || '');
-      if (lastNameEl) data.append('last_name', lastNameEl.value || '');
-      if (emailEl) data.append('email', emailEl.value || '');
-      if (phoneEl) data.append('phone', phoneEl.value || '');
-      if (yearEl) data.append('birth_year', yearEl.value || '1990');
-      if (locationEl) data.append('location', locationEl.value || '');
-      if (countryEl) data.append('country', countryEl.value || '');
-
-      // Send answers as JSON strings
-      data.append('answers_data', JSON.stringify(answers));
-      data.append('intensities_data', JSON.stringify(intensities));
-
-      fetch(wvpHealthData.ajaxurl, {
-        method: 'POST',
-        body: data,
-        credentials: 'same-origin'
-      })
-      .then(response => response.json())
-      .then(result => {
-        if (result.success) {
-          console.log('✅ BULLETPROOF: Answers saved successfully!', result.data);
-          if (result.data.result_id && !resultId) {
-            resultId = result.data.result_id;
-            localStorage.setItem('wvp_health_quiz_result_id', resultId);
-          }
-          if (result.data.session_id && !sessionId) {
-            sessionId = result.data.session_id;
-            localStorage.setItem(SESSION_KEY, sessionId);
-          }
-        } else {
-          console.error('❌ BULLETPROOF: Save failed:', result.data);
-        }
-      })
-      .catch(error => {
-        console.error('❌ BULLETPROOF: Network error:', error);
-      });
-    }
-
-    // Add change listeners to all question radios
-    questionRadios.forEach((radio) => {
-      radio.addEventListener('change', function() {
-        console.log('🔘 Question radio changed:', this.name, '=', this.value);
-        saveAnswersImmediately();
-      });
-    });
-
-    // Add change listeners to all intensity radios
-    intensityRadios.forEach((radio) => {
-      radio.addEventListener('change', function() {
-        console.log('🔘 Intensity radio changed:', this.name, '=', this.value);
-        saveAnswersImmediately();
-      });
-    });
-
-    console.log('✅ Bulletproof answer tracking system activated!');
-  }, 1000);
+    // Auto-save listeners are handled by setupAutoSaveListeners() - no need for duplicates
+    console.log('✅ Health quiz system ready - using unified auto-save system');
+  }, 100); // Short delay just to ensure DOM is ready
 });
