@@ -123,7 +123,7 @@ $completion_percentage = $total_questions > 0 ? round(($answered_questions / $to
             <h4>🎯 Question Access Test:</h4>
             <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; font-size: 12px;">
                 <tr><th>Q#</th><th>String Key Check</th><th>Integer Key Check</th><th>Final Answer</th></tr>
-                <?php for ($i = 0; $i < min(6, count($questions))): ?>
+                <?php for ($i = 0; $i < min(6, count($questions)); $i++): ?>
                     <?php
                     // Simulate admin panel logic
                     $answer = 'Nema odgovora';
