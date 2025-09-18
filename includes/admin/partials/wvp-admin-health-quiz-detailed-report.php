@@ -3,64 +3,55 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// $result variable is passed from the parent file
+// Get quiz questions from options
 $questions = get_option('wvp_health_quiz_questions', array());
 
-// Debug raw data
-echo '<!-- Debug Raw Data:
-Answers field: ' . esc_html($result['answers']) . '
-Intensity field: ' . esc_html($result['intensity_data']) . '
--->';
-
-// Parse answers and intensity data - NEW SYSTEM uses JSON, fallback to old formats
+// Parse answers and intensity data - SIMPLIFIED SYSTEM
 $answers = json_decode($result['answers'], true);
-if (!$answers) {
-    $answers = maybe_unserialize($result['answers']);
-}
-
 $intensity_data = json_decode($result['intensity_data'], true);
-if (!$intensity_data) {
-    $intensity_data = maybe_unserialize($result['intensity_data']);
-}
 
-// NEW SYSTEM: Check if answers are stored as object with question indices as keys
-if (is_array($answers) && !empty($answers)) {
-    // Check if this is the new format (object with question indices as keys)
-    $first_key = array_key_first($answers);
-    if (is_string($first_key) || is_numeric($first_key)) {
-        // This is the new format - answers are indexed by question number
-        $is_new_format = true;
-    } else {
-        // This is the old format - answers are sequential array
-        $is_new_format = false;
-    }
-} else {
-    $is_new_format = false;
-}
+// Ensure we have arrays
+if (!is_array($answers)) $answers = array();
+if (!is_array($intensity_data)) $intensity_data = array();
 
-// Fallback to empty arrays if both decode methods failed
-if (!is_array($answers)) {
-    $answers = array();
-}
-if (!is_array($intensity_data)) {
-    $intensity_data = array();
-}
-
-// Debug processed data
-echo '<!-- Debug Processed Data:
-Answers array: ' . print_r($answers, true) . '
-Answers array keys: ' . print_r(array_keys($answers), true) . '
-Answers array type: ' . gettype($answers) . '
-Intensity array: ' . print_r($intensity_data, true) . '
-Intensity array keys: ' . print_r(array_keys($intensity_data), true) . '
-Questions count: ' . count($questions) . '
--->';
+// Calculate statistics
+$total_questions = count($questions);
+$answered_questions = count(array_filter($answers, function($answer) {
+    return !empty($answer) && $answer !== 'Nema odgovora';
+}));
+$yes_answers = count(array_filter($answers, function($answer) {
+    return $answer === 'Da';
+}));
+$completion_percentage = $total_questions > 0 ? round(($answered_questions / $total_questions) * 100) : 0;
 ?>
 
 <div class="wrap">
     <h1>📊 Detaljan Izveštaj - <?php echo esc_html($result['first_name'] . ' ' . $result['last_name']); ?></h1>
 
     <a href="?page=wvp-health-quiz-results" class="button">⬅️ Nazad na listu</a>
+
+    <!-- Quick Stats Dashboard -->
+    <div class="wvp-stats-dashboard" style="margin: 20px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+        <div class="wvp-stat-card">
+            <div class="stat-value"><?php echo $completion_percentage; ?>%</div>
+            <div class="stat-label">Popunjenost ankete</div>
+            <div class="stat-bar">
+                <div class="stat-progress" style="width: <?php echo $completion_percentage; ?>%"></div>
+            </div>
+        </div>
+        <div class="wvp-stat-card">
+            <div class="stat-value"><?php echo $answered_questions; ?>/<?php echo $total_questions; ?></div>
+            <div class="stat-label">Odgovorena pitanja</div>
+        </div>
+        <div class="wvp-stat-card">
+            <div class="stat-value"><?php echo $yes_answers; ?></div>
+            <div class="stat-label">Pozitivni odgovori</div>
+        </div>
+        <div class="wvp-stat-card">
+            <div class="stat-value"><?php echo !empty($result['ai_analysis']) ? '✅' : '⏳'; ?></div>
+            <div class="stat-label">AI Analiza</div>
+        </div>
+    </div>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
 
@@ -154,152 +145,71 @@ Questions count: ' . count($questions) . '
     <div class="postbox" style="margin-top: 20px;">
         <div class="postbox-header"><h2>❓ Pitanja i odgovori</h2></div>
         <div class="inside">
-            <table class="wp-list-table widefat fixed striped">
+            <table class="wp-list-table widefat fixed striped wvp-questions-table">
                 <thead>
                     <tr>
                         <th style="width: 5%;">#</th>
-                        <th style="width: 50%;">Pitanje</th>
+                        <th style="width: 55%;">Pitanje</th>
                         <th style="width: 15%;">Odgovor</th>
-                        <th style="width: 30%;">Dodatni odgovori</th>
+                        <th style="width: 25%;">Intenzitet</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    // Debug: Show data summary
-                    echo '<!-- Debug: Questions count: ' . count($questions) . ', Answers count: ' . count($answers) . ', Intensity count: ' . count($intensity_data) . ' -->';
-                    ?>
                     <?php for ($i = 0; $i < count($questions); $i++): ?>
-                        <?php $question = $questions[$i]; ?>
-                        <tr>
-                            <td><?php echo $i + 1; ?></td>
+                        <?php
+                        $question = $questions[$i];
+
+                        // Get answer - simple approach
+                        $answer = 'Nema odgovora';
+                        if (isset($answers[(string)$i])) {
+                            $answer = $answers[(string)$i];
+                        } elseif (isset($answers[$i])) {
+                            $answer = $answers[$i];
+                        }
+
+                        // Get intensity
+                        $intensity_value = '';
+                        if (isset($intensity_data[(string)$i])) {
+                            $intensity_value = $intensity_data[(string)$i];
+                        } elseif (isset($intensity_data[$i])) {
+                            $intensity_value = $intensity_data[$i];
+                        }
+
+                        // Determine row class for better visual indication
+                        $row_class = '';
+                        if ($answer === 'Da') {
+                            $row_class = 'positive-answer';
+                        } elseif ($answer === 'Ne') {
+                            $row_class = 'negative-answer';
+                        } else {
+                            $row_class = 'no-answer';
+                        }
+                        ?>
+                        <tr class="<?php echo $row_class; ?>">
+                            <td><strong><?php echo $i + 1; ?></strong></td>
                             <td><?php echo esc_html($question['text']); ?></td>
                             <td>
-                                <?php
-                                $answer = 'Nema odgovora';
-
-                                // BULLETPROOF UNIVERSAL APPROACH - try all possible keys and formats
-                                if (isset($answers[(string)$i])) {
-                                    $answer = $answers[(string)$i];
-                                } elseif (isset($answers[$i])) {
-                                    $answer_data = $answers[$i];
-                                    if (is_string($answer_data)) {
-                                        $answer = $answer_data;
-                                    } elseif (is_array($answer_data)) {
-                                        $answer = reset($answer_data);
-                                    }
-                                } elseif (isset($answers['q'.$i])) {
-                                    $answer = $answers['q'.$i];
-                                }
-
-                                // NEW: Try parsing as raw JSON if we still don't have an answer
-                                if ($answer === 'Nema odgovora' && is_string($result['answers'])) {
-                                    $json_answers = json_decode($result['answers'], true);
-                                    if (is_array($json_answers)) {
-                                        if (isset($json_answers[(string)$i])) {
-                                            $answer = $json_answers[(string)$i];
-                                        } elseif (isset($json_answers[$i])) {
-                                            $answer = $json_answers[$i];
-                                        }
-                                    }
-                                }
-
-                                // Debug info for first few questions
-                                if ($i < 3) {
-                                    echo '<!-- Debug Q' . ($i+1) . ': Format = ' . ($is_new_format ? 'NEW' : 'OLD') . ', Answer = ' . var_export($answer, true) . ' -->';
-                                }
-
-                                echo '<span class="answer-badge ' . ($answer === 'Da' ? 'yes' : 'no') . '">' . esc_html($answer) . '</span>';
-                                ?>
+                                <span class="answer-badge <?php echo strtolower($answer); ?>">
+                                    <?php echo esc_html($answer); ?>
+                                </span>
                             </td>
                             <td>
-                                <?php
-                                $has_sub_data = false;
+                                <?php if ($answer === 'Da' && !empty($intensity_value)): ?>
+                                    <?php
+                                    // Show intensity level
+                                    $intensity_text = $intensity_value;
+                                    $intensity_index = intval($intensity_value) - 1;
 
-                                // First check if sub-questions are in the answer data itself
-                                if ($answer === 'Da' && is_array($answer_data)) {
-                                    // Look for sub-questions in answer data
-                                    foreach ($answer_data as $key => $value) {
-                                        if ($key !== 'main' && is_string($key) && !is_numeric($key)) {
-                                            if (!$has_sub_data) {
-                                                echo '<div class="sub-questions">';
-                                                $has_sub_data = true;
-                                            }
-                                            echo '<div class="sub-qa">';
-                                            echo '<strong>' . esc_html($key) . ':</strong> ';
-                                            echo '<span class="sub-answer">' . esc_html($value) . '</span>';
-                                            echo '</div>';
-                                        }
+                                    if (isset($question['intensity_levels']) && isset($question['intensity_levels'][$intensity_index])) {
+                                        $intensity_text = $question['intensity_levels'][$intensity_index];
                                     }
-                                    if ($has_sub_data) {
-                                        echo '</div>';
-                                    }
-                                }
-
-                                // If no sub-data found in answers, check intensity data
-                                $intensity_value = null;
-
-                                // BULLETPROOF UNIVERSAL APPROACH for intensities too
-                                if (isset($intensity_data[(string)$i])) {
-                                    $intensity_value = $intensity_data[(string)$i];
-                                } elseif (isset($intensity_data[$i])) {
-                                    $intensity_value = $intensity_data[$i];
-                                } elseif (isset($intensity_data['q'.$i])) {
-                                    $intensity_value = $intensity_data['q'.$i];
-                                }
-
-                                // NEW: Try parsing intensities as raw JSON if we still don't have a value
-                                if (empty($intensity_value) && is_string($result['intensity_data'])) {
-                                    $json_intensities = json_decode($result['intensity_data'], true);
-                                    if (is_array($json_intensities)) {
-                                        if (isset($json_intensities[(string)$i])) {
-                                            $intensity_value = $json_intensities[(string)$i];
-                                        } elseif (isset($json_intensities[$i])) {
-                                            $intensity_value = $json_intensities[$i];
-                                        }
-                                    }
-                                }
-
-                                if (!$has_sub_data && $answer === 'Da' && !empty($intensity_value)) {
-                                    $additional_data = $intensity_value;
-
-                                    // Debug: Show what we have for this question
-                                    if ($i < 3) {
-                                        echo '<!-- Debug intensity data for Q' . ($i+1) . ': ' . var_export($additional_data, true) . ' -->';
-                                    }
-
-                                    // Check if this is sub-questions data (object/array) or just intensity (number/string)
-                                    if (is_array($additional_data) || is_object($additional_data)) {
-                                        // This contains sub-questions and answers
-                                        echo '<div class="sub-questions">';
-                                        foreach ($additional_data as $sub_question => $sub_answer) {
-                                            if (is_string($sub_question) && !is_numeric($sub_question)) {
-                                                echo '<div class="sub-qa">';
-                                                echo '<strong>' . esc_html($sub_question) . ':</strong> ';
-                                                echo '<span class="sub-answer">' . esc_html($sub_answer) . '</span>';
-                                                echo '</div>';
-                                            }
-                                        }
-                                        echo '</div>';
-                                        $has_sub_data = true;
-                                    } else {
-                                        // This is just intensity level - try to get text from question definition
-                                        $intensity_index = intval($additional_data) - 1;
-                                        $intensity_text = $additional_data;
-
-                                        if (isset($question['intensity_levels']) && isset($question['intensity_levels'][$intensity_index])) {
-                                            $intensity_text = $question['intensity_levels'][$intensity_index];
-                                        }
-
-                                        echo '<span class="intensity-level">' . esc_html($intensity_text) . '</span>';
-                                        $has_sub_data = true;
-                                    }
-                                }
-
-                                // If still no data found, show N/A
-                                if (!$has_sub_data) {
-                                    echo '<span style="color: #999;">N/A</span>';
-                                }
-                                ?>
+                                    ?>
+                                    <span class="intensity-badge level-<?php echo intval($intensity_value); ?>">
+                                        <?php echo esc_html($intensity_text); ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="no-intensity">—</span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endfor; ?>
@@ -337,74 +247,137 @@ Questions count: ' . count($questions) . '
 </div>
 
 <style>
+/* Stats Dashboard */
+.wvp-stat-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+.wvp-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #0073aa;
+    margin-bottom: 5px;
+}
+.stat-label {
+    font-size: 13px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.stat-bar {
+    height: 4px;
+    background: #f0f0f0;
+    border-radius: 2px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+.stat-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #0073aa, #005177);
+    transition: width 0.8s ease;
+}
+
+/* Question Table */
+.wvp-questions-table tr.positive-answer {
+    background-color: #fff5f5;
+}
+.wvp-questions-table tr.negative-answer {
+    background-color: #f0f9ff;
+}
+.wvp-questions-table tr.no-answer {
+    background-color: #f9f9f9;
+}
+
+/* Answer Badges */
 .answer-badge {
+    padding: 4px 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: inline-block;
+}
+.answer-badge.da {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+.answer-badge.ne {
+    background: linear-gradient(135deg, #28a745, #218838);
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+}
+.answer-badge.nema {
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+}
+
+/* Intensity Badges */
+.intensity-badge {
     padding: 3px 8px;
     border-radius: 12px;
     color: white;
-    font-weight: bold;
-    font-size: 11px;
+    font-weight: 500;
+    font-size: 10px;
+    display: inline-block;
 }
-.answer-badge.yes {
-    background-color: #dc3545;
+.intensity-badge.level-1 { background: #17a2b8; }
+.intensity-badge.level-2 { background: #ffc107; color: #333; }
+.intensity-badge.level-3 { background: #fd7e14; }
+.intensity-badge.level-4 { background: #dc3545; }
+.intensity-badge.level-5 { background: #6f42c1; }
+
+.no-intensity {
+    color: #999;
+    font-style: italic;
 }
-.answer-badge.no {
-    background-color: #28a745;
-}
-.intensity-level {
-    background-color: #007cba;
-    color: white;
-    padding: 2px 6px;
-    border-radius: 8px;
-    font-size: 11px;
-}
+
+/* AI Section */
 .ai-section {
     margin-bottom: 15px;
-    padding: 10px;
-    background: #f8f9fa;
-    border-left: 4px solid #007cba;
+    padding: 15px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-left: 4px solid #0073aa;
+    border-radius: 0 8px 8px 0;
 }
 .ai-section h4 {
-    margin: 0 0 5px 0;
-    color: #007cba;
+    margin: 0 0 8px 0;
+    color: #0073aa;
+    font-weight: 600;
 }
+
+/* Product Recommendations */
 .product-recommendation {
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 8px;
     margin-bottom: 10px;
-    background: #fff;
+    background: linear-gradient(135deg, #fff, #fafafa);
+    transition: all 0.2s ease;
+}
+.product-recommendation:hover {
+    border-color: #0073aa;
+    transform: translateX(5px);
 }
 .product-recommendation h4 {
-    margin: 0 0 5px 0;
+    margin: 0 0 8px 0;
 }
 .product-recommendation h4 a {
     text-decoration: none;
-    color: #007cba;
-}
-
-.sub-questions {
-    font-size: 12px;
-}
-
-.sub-qa {
-    margin-bottom: 5px;
-    padding: 3px 0;
-    border-bottom: 1px dotted #ddd;
-}
-
-.sub-qa:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.sub-qa strong {
     color: #0073aa;
-    font-weight: 500;
+    font-weight: 600;
 }
-
-.sub-answer {
-    color: #666;
-    margin-left: 5px;
+.product-recommendation h4 a:hover {
+    color: #005177;
 }
 </style>
 
