@@ -7208,6 +7208,12 @@ function wvp_generate_step_2() {
     </style>
 
     <script>
+    // OPTIMIZED AUTO-SAVE SYSTEM FOR QUESTION PAGES
+    let autoSaveTimeout;
+    let lastSaveTime = 0;
+    const AUTO_SAVE_DELAY = 500;
+    const MIN_SAVE_INTERVAL = 2000;
+
     function toggleIntensity(questionIndex, answer) {
         const intensitySection = document.getElementById('intensity_' + questionIndex);
         if (intensitySection) {
@@ -7220,6 +7226,126 @@ function wvp_generate_step_2() {
                 intensityInputs.forEach(input => input.checked = false);
             }
         }
+
+        // Trigger auto-save after intensity toggle
+        triggerAutoSave();
+    }
+
+    function triggerAutoSave(immediate = false) {
+        if (autoSaveTimeout) {
+            clearTimeout(autoSaveTimeout);
+        }
+
+        const now = Date.now();
+        if (immediate || (now - lastSaveTime) >= MIN_SAVE_INTERVAL) {
+            autoSaveToDatabase();
+            lastSaveTime = now;
+        } else {
+            autoSaveTimeout = setTimeout(() => {
+                autoSaveToDatabase();
+                lastSaveTime = Date.now();
+            }, AUTO_SAVE_DELAY);
+        }
+    }
+
+    function autoSaveToDatabase() {
+        console.log('🔄 Auto-save: Starting save process...');
+
+        const form = document.querySelector('.wvp-health-quiz-form');
+        if (!form) {
+            console.log('❌ Auto-save: Form not found');
+            return;
+        }
+
+        const formData = new FormData(form);
+        formData.append('action', 'wvp_save_health_quiz');
+        formData.append('nonce', '<?php echo wp_create_nonce('wvp_health_quiz_nonce'); ?>');
+        formData.append('auto_save', '1');
+
+        showSaveIndicator('saving');
+
+        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('✅ Auto-save: Success', data);
+            showSaveIndicator('success');
+        })
+        .catch(error => {
+            console.log('❌ Auto-save: Error', error);
+            showSaveIndicator('error');
+        });
+    }
+
+    function showSaveIndicator(status) {
+        let indicator = document.querySelector('.wvp-save-indicator');
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.className = 'wvp-save-indicator';
+            indicator.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-weight: bold;
+                z-index: 10000;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            document.body.appendChild(indicator);
+        }
+
+        switch(status) {
+            case 'saving':
+                indicator.textContent = '💾 Čuva se...';
+                indicator.style.background = '#ffc107';
+                indicator.style.color = '#856404';
+                break;
+            case 'success':
+                indicator.textContent = '✅ Sačuvano';
+                indicator.style.background = '#28a745';
+                indicator.style.color = 'white';
+                setTimeout(() => {
+                    indicator.style.opacity = '0';
+                    setTimeout(() => {
+                        indicator.style.opacity = '1';
+                    }, 2000);
+                }, 2000);
+                break;
+            case 'error':
+                indicator.textContent = '❌ Greška';
+                indicator.style.background = '#dc3545';
+                indicator.style.color = 'white';
+                break;
+        }
+    }
+
+    function setupAutoSaveListeners() {
+        console.log('🎯 Setting up auto-save listeners for question page...');
+
+        // Listen for radio button changes (answers and intensity)
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio' && (
+                e.target.name.includes('answers[') ||
+                e.target.name.includes('intensity[')
+            )) {
+                console.log('📻 Radio button changed:', e.target.name, '=', e.target.value);
+                triggerAutoSave();
+            }
+        });
+
+        // Listen for text input changes
+        document.addEventListener('input', function(e) {
+            if (e.target.type === 'text' || e.target.type === 'email' || e.target.type === 'tel') {
+                console.log('📝 Text input changed:', e.target.name);
+                triggerAutoSave();
+            }
+        });
+
+        console.log('✅ Auto-save listeners ready for question page');
     }
 
     function validateForm() {
@@ -7265,6 +7391,17 @@ function wvp_generate_step_2() {
 
         return true; // Allow form submission
     }
+
+    // Initialize auto-save when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 Question page loaded - initializing auto-save...');
+        setupAutoSaveListeners();
+
+        // Trigger initial save to establish session
+        setTimeout(() => {
+            triggerAutoSave(true);
+        }, 1000);
+    });
     </script>
     <?php
     return ob_get_clean();
