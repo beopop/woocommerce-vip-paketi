@@ -10,23 +10,43 @@ $questions = get_option('wvp_health_quiz_questions', array());
 function parse_data_robust($raw_data) {
     if (empty($raw_data)) return array();
 
-    // Try JSON decode first
+    // Step 1: Try direct JSON decode first
     $decoded = json_decode($raw_data, true);
     if (is_array($decoded)) {
         return $decoded;
     }
 
-    // Try PHP unserialize as fallback
+    // Step 2: Handle escaped JSON strings (double-encoded)
+    // If we have escaped quotes like {\"1\":\"Ne\"}, unescape them
+    if (is_string($raw_data) && strpos($raw_data, '\\"') !== false) {
+        $unescaped = stripslashes($raw_data);
+        $decoded = json_decode($unescaped, true);
+        if (is_array($decoded)) {
+            return $decoded;
+        }
+    }
+
+    // Step 3: Try PHP unserialize as fallback
     $unserialized = @unserialize($raw_data);
     if (is_array($unserialized)) {
         return $unserialized;
     }
 
-    // Try double-encoded JSON
+    // Step 4: Try double-encoded JSON (JSON within JSON string)
     if (is_string($decoded)) {
         $double_decoded = json_decode($decoded, true);
         if (is_array($double_decoded)) {
             return $double_decoded;
+        }
+    }
+
+    // Step 5: Try manual quote fixing for malformed JSON
+    if (is_string($raw_data)) {
+        // Try fixing common JSON escaping issues
+        $fixed_data = str_replace('\\"', '"', $raw_data);
+        $decoded = json_decode($fixed_data, true);
+        if (is_array($decoded)) {
+            return $decoded;
         }
     }
 
