@@ -1083,12 +1083,44 @@ function bulletproof_save_answers() {
 
         $update_data = array();
 
-        // Always update answers and intensities if provided
+        // MERGE answers and intensities instead of overwriting
         if (!empty($answers_raw) && $answers_raw !== '{}') {
-            $update_data['answers'] = $answers_raw;
+            // Get existing answers from database with robust parsing
+            $existing_answers_raw = $existing_record->answers;
+            $existing_answers = json_decode($existing_answers_raw, true);
+
+            // Handle escaped JSON if needed
+            if (!is_array($existing_answers) && !empty($existing_answers_raw) && strpos($existing_answers_raw, '\\"') !== false) {
+                $unescaped = stripslashes($existing_answers_raw);
+                $existing_answers = json_decode($unescaped, true);
+            }
+
+            if (!is_array($existing_answers)) $existing_answers = array();
+
+            // Merge new answers with existing ones (new answers override old ones for same keys)
+            $merged_answers = array_merge($existing_answers, $answers);
+            $update_data['answers'] = json_encode($merged_answers);
+
+            error_log('BULLETPROOF: Merging answers - Existing: ' . print_r($existing_answers, true) . ' New: ' . print_r($answers, true) . ' Merged: ' . print_r($merged_answers, true));
         }
         if (!empty($intensities_raw) && $intensities_raw !== '{}') {
-            $update_data['intensity_data'] = $intensities_raw;
+            // Get existing intensities from database with robust parsing
+            $existing_intensities_raw = $existing_record->intensity_data;
+            $existing_intensities = json_decode($existing_intensities_raw, true);
+
+            // Handle escaped JSON if needed
+            if (!is_array($existing_intensities) && !empty($existing_intensities_raw) && strpos($existing_intensities_raw, '\\"') !== false) {
+                $unescaped = stripslashes($existing_intensities_raw);
+                $existing_intensities = json_decode($unescaped, true);
+            }
+
+            if (!is_array($existing_intensities)) $existing_intensities = array();
+
+            // Merge new intensities with existing ones (new intensities override old ones for same keys)
+            $merged_intensities = array_merge($existing_intensities, $intensities);
+            $update_data['intensity_data'] = json_encode($merged_intensities);
+
+            error_log('BULLETPROOF: Merging intensities - Existing: ' . print_r($existing_intensities, true) . ' New: ' . print_r($intensities, true) . ' Merged: ' . print_r($merged_intensities, true));
         }
 
         // Update basic info only if provided and not empty
